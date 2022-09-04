@@ -3,7 +3,7 @@ import plotly.express as px
 import streamlit as st
 from download import download
 from forex_python.converter import CurrencyRates
-
+import requests
 
 def main():
     download()
@@ -29,7 +29,7 @@ def main():
     with st.form(key='searchMoeda', clear_on_submit=True):
         search_Currencies = st.text_input("Qual moeda você esta procurando?").upper()
         submit_button = st.form_submit_button(label='Procurar')
-
+        res = requests.get('http://economia.awesomeapi.com.br/json/all/{}-BRL'.format(search_Currencies))
         if submit_button:
             if search_Currencies not in listademoedas:
                 st.info('A moeda digitada não existe')
@@ -44,13 +44,16 @@ def main():
                     results = df.loc[df['Moedas'] == search_Currencies]
                     st.write(results)
                 with col2:
-                    c = CurrencyRates()
-                    try:
-                        preco = c.get_rate(search_Currencies, 'BRL')
-                        st.info('Preço Atual: R$ {:,.2f}'.format(preco))
-                    except:
-                        st.info('Moeda fora do rastreio')
-
+                    if res.status_code == 200:
+                        moeda = float(res.json()[search_Currencies]['low'])
+                        st.info('Preço Atual: R$ {:,.2f}'.format(moeda))
+                    else:
+                        try:
+                            c = CurrencyRates()
+                            cota = c.get_rate(search_Currencies, 'BRL')
+                            st.info('Preço Atual: R$ {:,.2f}'.format(cota))
+                        except:
+                            st.info('Moeda fora do rastreio')
 
 
 
