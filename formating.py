@@ -22,7 +22,7 @@ def treatment():
     a2.font = ft
     b2.font = ft
     c2.font = ft
-    i=3
+
     wb.save('Countries list.xlsx')
     return
 

@@ -2,7 +2,6 @@ import requests
 import pandas as pd
 from formating import treatment
 
-
 def download():
     print('Your request is being processed...')
     # first thing geting the right api
@@ -11,7 +10,6 @@ def download():
     # Creating a list for each object i'm getting so i can work on it 
     Name = []
     Capital = []
-    areas = []
     currencies = []
 
     def format_float(value):
@@ -30,7 +28,6 @@ def download():
         else: 
             Capital.append(cidade)
 
-    
 
     # Cleaning currencies 
     for moedas in request:
@@ -107,7 +104,6 @@ def download():
     df.to_excel('Countries list.xlsx', index=False)
     # calling a function to treat the data
     treatment()
-
     print("Aquivo criado")
 
 
