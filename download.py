@@ -2,10 +2,11 @@ import requests
 import pandas as pd
 from formating import treatment
 
+
 def download():
     print('Your request is being processed...')
     # first thing geting the right api
-    request = requests.get("https://restcountries.com/v2/all?fields=name,capital,area,currencies").json()
+    request = requests.get("https://restcountries.com/v2/all?fields=name,capital,currencies").json()
 
     # Creating a list for each object i'm getting so i can work on it 
     Name = []
@@ -29,15 +30,7 @@ def download():
         else: 
             Capital.append(cidade)
 
-    # Cleaning areas
-    for tamanho in request:
-        area = tamanho.get('area')
-        if area == None:
-            areas.append("-")
-        else:
-            area = format_float(area)
-            area = area.replace(".", ",").replace("_", ".")
-            areas.append(area)
+    
 
     # Cleaning currencies 
     for moedas in request:
@@ -55,18 +48,16 @@ def download():
     # putting the cleaner data in the df
     df['Paises'] = Name
     df['Capitais'] = Capital
-    df['Area'] = areas
     df['Moedas'] = currencies
 
     # taking of the old data
     df.pop('independent')
     df.pop('name')
     df.pop('capital')
-    df.pop('area')
     df.pop('currencies')
 
     # organizing rows
-    nome_coluna = ['Paises', 'Capitais', "Area", 'Moedas']
+    nome_coluna = ['Paises', 'Capitais', 'Moedas']
     df = df.reindex(columns=nome_coluna)
 
     # starting the excel writer
@@ -113,10 +104,10 @@ def download():
     m = df["Moedas"].str.endswith(', ')
     df["Moedas"].loc[m] =  df["Moedas"].loc[m].str[:-2]
     df.pop('Currencies2')
-    df.pop('Area')
     df.to_excel('Countries list.xlsx', index=False)
     # calling a function to treat the data
     treatment()
+
     print("Aquivo criado")
 
 

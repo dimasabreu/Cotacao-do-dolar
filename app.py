@@ -23,8 +23,14 @@ def main():
     # divindo em colunas
     for item in df['Moedas']:
         listademoedas.append(item)
-    listademoedas.append('TODOS')
-    listademoedas.append('TODAS')
+
+    lista2 = ['TODOS', 'TODAS', 'BTC', 'ETH', 'BTC', 'DOGE', 'ETH', 'LTC', 'XRP']
+    for item in lista2:
+        if item not in listademoedas:
+            listademoedas.append(item)
+    
+    
+
     
     with st.form(key='searchMoeda', clear_on_submit=True):
         search_Currencies = st.text_input("Qual moeda você esta procurando?").upper()
@@ -37,6 +43,11 @@ def main():
                 st.info('Você procurou por : Todas as moedas')
                 results = df
                 st.write(results)
+            elif search_Currencies == "BTC":
+                if res.status_code == 200:
+                        moeda = res.json()[search_Currencies]['low']
+                        st.info('Sabia que você ia digitar isso o preço da ' + search_Currencies + ' está em: R$' + moeda + ",00")
+            
             else:
                 col1, col2 = st.columns([3,2])
                 with col1:
