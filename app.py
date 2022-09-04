@@ -8,7 +8,7 @@ import requests
 
  # configurações da tabela
 st.set_page_config(page_title="Lista de Moeda", 
-                page_icon=":bar_chart:",
+                page_icon=":money_with_wings:",
                 layout="wide")
 
 
