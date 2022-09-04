@@ -102,6 +102,30 @@ def streamlit_scene():
         st.subheader('Opções disponíveis:')
         st.caption('Nome de um País ou de uma Moeda')
         st.caption('Digite todas para ver a lista completa')
+        st.subheader('Conversor')
+        option = st.selectbox(
+        'Escolha uma moeda',
+        ('USD', 'EUR', 'BRL'))
+        option2 = st.selectbox(
+        'Para',
+        ('BRL', 'USD', 'EUR'))
+        link = ('http://economia.awesomeapi.com.br/json/all/' + option + '-' + option2)
+        res2 = requests.get(link)
+        if res2.status_code == 200:
+            moeda1 = float(res2.json()[option]['low'])
+            with st.form(key='conversor'):
+                convertendo = float(st.number_input("Digite o valor a ser Convertido:"))
+                submit_button = st.form_submit_button(label='Converter')
+                if option2 == 'USD':
+                    total = convertendo * moeda1
+                    st.info(f'Valor convertido: $ {total:.2f}')
+                elif option2 == 'EUR':
+                    total = convertendo * moeda1
+                    st.info(f'Valor convertido: € {total:.2f}')
+                else:
+                    total = convertendo * moeda1
+                    st.info(f'Valor convertido: R$ {total:.2f}')
+
 
 # confgs da pagina
 
