@@ -1,6 +1,7 @@
 import requests
 import pandas as pd
 from formating import treatment
+from googletrans import Translator 
 
 def download():
     print('Your request is being processed...')
@@ -18,7 +19,12 @@ def download():
     # Cleaning country names
     for pais in request:
         name = pais['name']
-        Name.append(name)
+        try:
+            s = Translator().translate(text=name, dest='pt').text
+            Name.append(s)
+        except:
+            Name.append(name)
+        
 
     # Cleaning capital names
     for city in request:

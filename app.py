@@ -6,7 +6,7 @@ from forex_python.converter import CurrencyRates
 import requests
 
 def main():
-    download()
+    '''download()'''
     # configurações da tabela
     st.set_page_config(page_title="Lista de Moeda", 
                     page_icon=":bar_chart:",
@@ -16,7 +16,7 @@ def main():
         io='Countries list.xlsx',
         engine='openpyxl',
         sheet_name='Sheet1',
-        skiprows=1,
+        skiprows=0,
         usecols='A:C'
     )
     listademoedas = []
@@ -24,7 +24,7 @@ def main():
     for item in df['Moedas']:
         listademoedas.append(item)
 
-    lista2 = ['TODOS', 'TODAS', 'BTC', 'ETH', 'BTC', 'DOGE', 'ETH', 'LTC', 'XRP']
+    lista2 = ['TODOS', 'TODAS', 'BTC', 'ETH', 'BTC', 'DOGE', 'LTC', 'XRP']
     for item in lista2:
         if item not in listademoedas:
             listademoedas.append(item)
@@ -46,7 +46,23 @@ def main():
             elif search_Currencies == "BTC":
                 if res.status_code == 200:
                         moeda = res.json()[search_Currencies]['low']
-                        st.info('Sabia que você ia digitar isso o preço da ' + search_Currencies + ' está em: R$' + moeda + ",00")
+                        st.info('Sabia que você ia digitar isso o preço da ' + search_Currencies + ' está em: R$' + moeda + "0,00")
+            elif search_Currencies == "ETH":
+                if res.status_code == 200:
+                        moeda = res.json()[search_Currencies]['low']
+                        st.info('O preço atual do Ethereum ' + search_Currencies + ' está em: R$ ' + moeda + "000,00")
+            elif search_Currencies == "DOGE":
+                if res.status_code == 200:
+                        moeda = res.json()[search_Currencies]['low']
+                        st.info('O preço atual da ' + search_Currencies + ' está em: R$ ' + moeda)
+            elif search_Currencies == "LTC":
+                if res.status_code == 200:
+                        moeda = res.json()[search_Currencies]['low']
+                        st.info('O preço da ' + search_Currencies + ' está em: R$ ' + moeda + ',00')
+            elif search_Currencies == "XRP":
+                if res.status_code == 200:
+                        moeda = res.json()[search_Currencies]['low']
+                        st.info('O preço da ' + search_Currencies + ' está em: R$ ' + moeda + '0')
             
             else:
                 col1, col2 = st.columns([3,2])
