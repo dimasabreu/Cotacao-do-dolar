@@ -5,12 +5,15 @@ from forex_python.converter import CurrencyRates
 import requests
 
 
-def main():
-    '''download()'''
-    # configurações da tabela
-    st.set_page_config(page_title="Lista de Moeda", 
-                    page_icon=":bar_chart:",
-                    layout="wide")
+
+ # configurações da tabela
+st.set_page_config(page_title="Lista de Moeda", 
+                page_icon=":bar_chart:",
+                layout="wide")
+
+
+@st.cache
+def pegando_os_dados_do_exel():
     # criando a tabela 
     df = pd.read_excel(
         io='Countries list.xlsx',
@@ -19,6 +22,13 @@ def main():
         skiprows=0,
         usecols='A:C'
     )
+    return df
+
+
+df = pegando_os_dados_do_exel()
+
+
+def streamlit_scene():
     listademoedas = []
     # divindo em colunas
     for item in df['Moedas']:
@@ -49,7 +59,7 @@ def main():
                     if search_Currencies not in listademoedas:
                         st.info('A moeda digitada não existe')
                     elif search_Currencies == "TODOS" or search_Currencies == "TODAS":
-                        st.info('Você procurou por : Todas as moedas')
+                        st.info('Lista completa')
                         results = df
                         st.write(results)
                     elif search_Currencies == "BTC":
@@ -89,10 +99,24 @@ def main():
                 else:
                     st.info('{} não é um argumento valido'.format(search_Currencies))
     with col1:
-        st.info('Você pode pesquisar por:')
-        st.info('Nome de um País ou de uma Moeda')
-        st.info('Digite todas para ver a lista completa')
+        st.subheader('Opções disponíveis:')
+        st.caption('Nome de um País ou de uma Moeda')
+        st.caption('Digite todas para ver a lista completa')
 
+# confgs da pagina
 
+st.markdown("<h1 style='text-align: center; color: white;'>Lista de paises e suas Moedas</h1>", unsafe_allow_html=True)
+st.markdown('---')
+
+# usando css para esconder as coisas da pagina
+hide_st_style = """
+                <style>
+                #MainMenu {visibility: hidden;}
+                footer {visibility: hidden;}
+                header {visibility: hidden;}
+                </style>
+                """
+st.markdown(hide_st_style, unsafe_allow_html=True)         
 if __name__ == '__main__':
-    main()
+    pegando_os_dados_do_exel()
+    streamlit_scene()   
