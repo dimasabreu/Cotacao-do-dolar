@@ -13,9 +13,6 @@ def download():
     Capital = []
     currencies = []
 
-    def format_float(value):
-        return f'{value:_.2f}'
-
     # Cleaning country names
     for pais in request:
         name = pais['name']
