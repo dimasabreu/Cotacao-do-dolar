@@ -1,4 +1,4 @@
-# Testandostreamlit
+# Cotação do dolar
 
 <p>Esse programa foi um teste para utilização da biblioteca Streamlit do python.</p>
 <p>Primeiro criei um resquest api para uma api que mostra todos os paises, capitais e mais infos</p>
